@@ -1,3 +1,27 @@
+# Syed Samiullah — FlyRank ML Internship
+
+**Lane:** Refresh / Content Opportunity Scoring (Lane 2, confirmed)
+
+**Progress so far:**
+- ✅ Notebook 01 (first discovery) and Notebook 02 (readable model) — 
+  completed and committed under `notebooks/`
+- ✅ ML-02 (Research Question and Provisional Lane) — completed under 
+  `work/notebooks/`
+- ✅ ML-03 (Frame Your Lane as an ML Task) — completed under 
+  `work/notebooks/w02_ml_task_framing.ipynb`
+- 🔲 Capstone modeling — not yet started (planned for Week 5+)
+
+**What this lane does:** scores web pages by how urgently they need a 
+content refresh - update, expand, merge, prune, or monitor - using 
+observable search signals (impressions, position, CTR, freshness). A 
+random forest model beat a hand-written baseline rule by roughly 3x on 
+Precision@50 (0.74 vs 0.24) on the starter dataset.
+
+**My work lives in:** `work/` and `work/notebooks/` - everything below 
+this point is the original starter repo documentation.
+
+---
+
 # FlyRank ML Internship — Starter Repo
 
 **Applied Search Intelligence: Google Search Ranking & Discoverability**
