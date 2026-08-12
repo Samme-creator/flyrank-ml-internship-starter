@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refresh / Content Opportunity Scoring — Syed Samiullah</title>
+<style>
+  :root{
+    --paper: #F7F4EE;
+    --paper-panel: #FBFAF6;
+    --ink: #20241F;
+    --ink-soft: #565048;
+    --growth: #3B6E52;
+    --decline: #A34B28;
+    --hairline: #D8D3C7;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.7; font-size:16px;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:64px 28px 100px;}
+
+  .masthead{border-bottom:3px solid var(--ink); padding-bottom:28px; margin-bottom:44px;}
+  .eyebrow{
+    font-family:Georgia,serif; font-style:italic; color:var(--ink-soft);
+    font-size:13px; letter-spacing:.04em; margin-bottom:14px;
+  }
+  h1{
+    font-family:Georgia,'Times New Roman',serif; font-weight:700;
+    font-size:32px; line-height:1.25; margin:0 0 12px; color:var(--ink);
+  }
+  .subtitle{font-size:16px; color:var(--ink-soft); margin-bottom:18px; max-width:60ch;}
+  .byline{font-size:13px; color:var(--ink-soft);}
+  .byline a{color:var(--growth); text-decoration:none; border-bottom:1px solid var(--growth);}
+
+  nav.toc{
+    background:var(--paper-panel); border:1px solid var(--hairline); border-radius:2px;
+    padding:18px 22px; margin-bottom:8px; columns:2; column-gap:24px;
+  }
+  nav.toc a{
+    display:block; color:var(--ink); text-decoration:none; font-size:13px;
+    padding:3px 0; break-inside:avoid;
+  }
+  nav.toc a:before{content:"— "; color:var(--hairline);}
+  nav.toc a:hover{color:var(--growth);}
+
+  h2{
+    font-family:Georgia,serif; font-weight:700; font-size:21px; color:var(--ink);
+    margin:52px 0 16px; padding-bottom:10px; border-bottom:1px solid var(--hairline);
+  }
+  h3{font-family:Georgia,serif; font-style:italic; font-weight:400; font-size:16px; color:var(--ink-soft); margin:26px 0 10px;}
+  p{margin:0 0 15px; max-width:68ch;}
+  code{
+    background:var(--paper-panel); border:1px solid var(--hairline); color:var(--ink);
+    padding:1px 6px; border-radius:2px; font-family:'SF Mono',Consolas,monospace; font-size:13px;
+  }
+  a{color:var(--growth);}
+
+  .panel{
+    background:var(--paper-panel); border:1px solid var(--hairline); border-radius:2px;
+    padding:20px 24px; margin:18px 0;
+  }
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
+  th, td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--hairline);}
+  th{font-family:Georgia,serif; font-style:italic; font-weight:400; color:var(--ink-soft); font-size:12.5px;}
+  td.num{font-variant-numeric:tabular-nums; text-align:right;}
+  th.num{text-align:right;}
+
+  ul{padding-left:20px; margin:12px 0;} li{margin-bottom:9px; max-width:66ch;}
+
+  .signal{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px;}
+  .signal.up{background:var(--growth);}
+  .signal.down{background:var(--decline);}
+  .stat-row{display:flex; align-items:baseline; gap:10px; margin-bottom:9px; font-size:14px;}
+  .stat-label{width:170px; color:var(--ink-soft); flex-shrink:0;}
+  .stat-track{flex:1; background:var(--paper); border:1px solid var(--hairline); border-radius:2px; height:14px; overflow:hidden;}
+  .stat-fill{height:100%; background:var(--growth);}
+  .stat-val{width:60px; text-align:right; font-variant-numeric:tabular-nums;}
+
+  .callout{border-left:3px solid var(--decline); background:var(--paper-panel); padding:16px 20px; margin:18px 0;}
+  .callout.positive{border-left-color:var(--growth);}
+  .callout h3{margin-top:0; color:var(--ink); font-style:normal; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:.04em;}
+
+  .credit{
+    background:var(--paper-panel); border:1px solid var(--ink); border-radius:2px;
+    padding:18px 22px; margin-top:16px; font-family:Georgia,serif;
+  }
+  .credit a{font-weight:700;}
+
+  footer{margin-top:60px; padding-top:22px; border-top:1px solid var(--hairline); color:var(--ink-soft); font-size:13px;}
+
+  @media (max-width:600px){ nav.toc{columns:1;} h1{font-size:26px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="eyebrow">FlyRank ML Internship — Applied Search Intelligence — Field Report</div>
+    <h1>Refresh / Content Opportunity Scoring</h1>
+    <p class="subtitle">Which pages should a content team review first — and can a learned model beat a transparent hand rule at finding them?</p>
+    <p class="byline">Syed Samiullah, AI/ML Student, University of Malakand · <a href="https://github.com/Samme-creator/flyrank-ml-internship-starter">Source repository</a></p>
+  </div>
+
+  <nav class="toc">
+    <a href="#abstract">Abstract</a>
+    <a href="#intro">Introduction</a>
+    <a href="#data">Data</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#results">Results</a>
+    <a href="#limitations">Limitations</a>
+    <a href="#recommendations">Recommendations</a>
+    <a href="#reproducibility">Reproducibility</a>
+    <a href="#acknowledgments">Acknowledgments</a>
+  </nav>
+
+  <h2 id="abstract">Abstract</h2>
+  <p>I set out to answer a simple question: if a content team can only review a handful of pages each cycle, which ones should they look at first? I used one month (March 2026) of the FlyRank internship warehouse — 9.84 million page-day rows across 70 clients — and trained a random forest to rank pages by risk of impression decline, using a client-holdout split so the model couldn't just memorize a client's quirks. Against a plain hand-written baseline rule on the same test data, the model hit Precision@50 of 0.42 versus the baseline's 0.06, and Precision@20 of 0.35 versus the baseline's 0.00. That's roughly a 7x improvement. I also caught and fixed a real label-leakage bug partway through, which is documented below because it's the more interesting part of the story. Everything here is an observed result on this specific slice of data, not a claim that generalizes beyond it.</p>
+
+  <h2 id="intro">Introduction / Problem Statement</h2>
+  <p>Nobody reviewing content has time to check every page every week. So the real decision isn't "is this page good or bad" — it's "which pages are worth a human's limited attention first." A hand-written rule (something like "flag pages that are old and still getting traffic") is fast to build and you can explain it in one sentence, but it can only ever check two or three things at once. A model can weigh a lot more signals together. This paper tests whether that actually pays off, on the same data, with the same scoring rule, so the comparison is fair.</p>
+
+  <h2 id="data">Data</h2>
+  <p>Source: <code>FlyRank/internship-warehouse</code> (Hugging Face, gated release), table <code>fact_content_daily_performance</code>. Slice used: <code>month=2026-03</code> — a mid-panel month, deliberately avoiding the final month (2026-06), which is the sealed test window and the natural outcome period for any past-to-future label.</p>
+  <div class="panel">
+    <table>
+      <tr><th>Check</th><th class="num">Result</th></tr>
+      <tr><td>Rows in slice</td><td class="num">9,841,378</td></tr>
+      <tr><td>Date span</td><td class="num">2026-03-01 – 2026-03-31</td></tr>
+      <tr><td>Grain violations (page × client × day, expected unique)</td><td class="num">0</td></tr>
+      <tr><td><span class="signal down"></span>GA4 data availability</td><td class="num">413,966 rows (4.2%)</td></tr>
+      <tr><td><span class="signal up"></span>GSC data availability</td><td class="num">3,611,061 rows (36.7%)</td></tr>
+    </table>
+  </div>
+  <p><strong>What I left out, and why —</strong> FlyRank's own product decision flags (<code>health_score</code>, <code>priority_score</code>, <code>action_type</code>) aren't in this table to begin with, and I didn't try to rebuild them. AI-referral columns exist but are thin — the lane guide flags them as fine for exploratory looking, not for training a classifier on, so I left them out too. Nothing here has a client name, domain, URL, or raw query in it — just pseudonymized IDs.</p>
+
+  <h2 id="methodology">Methodology</h2>
+  <p><strong>What counts as one row</strong> — one page, for one client, on one day.</p>
+  <p><strong>The label</strong> — I called a page "declining" if its impressions in the second half of March (days 16–31) dropped below 80% of what it had in the first half (days 1–15). This is a proxy, not a real future outcome — it's just describing what already happened within the month, not predicting what happens next.</p>
+  <p><strong>Features</strong> — first-half impressions, average position, average clicks. All three are things you'd actually know before the second half of the month even happens.</p>
+  <p><strong>Baseline</strong> — a simple rule: pages that were visible (20+ impressions in the first half) and ranking well, scored by how much traffic they had. It never looks at the label at all.</p>
+  <p><strong>Model</strong> — random forest, 200 trees. I picked it because it can combine signals in ways a fixed rule can't, and you can still ask it afterward which features it actually relied on.</p>
+  <p><strong>Validation</strong> — split by client, not by row. Pages from the same client never show up in both the training set and the test set. If I'd split randomly instead, the model could partly "cheat" by learning a specific client's patterns rather than something that actually generalizes. I checked the overlap myself — zero clients appeared in both sets.</p>
+
+  <div class="callout">
+    <h3>The bug I caught</h3>
+    <p>My first version of this model scored a perfect 1.0 precision at both k=20 and k=50. That's not a good sign — it's the number you get when something is broken, not when something works. Turned out two things were wrong: my baseline formula was literally checking the label inside its own scoring logic, and one of my features (<code>imp_total</code>) could be reverse-engineered back into the exact number the label was built from. I pulled both out and re-ran everything. To make sure the fix actually worked, I deliberately put the leaking feature back in as a test — precision jumped straight back to 1.000, which confirmed that was really the problem. With it removed, honest precision came out to 0.400. That gap between 0.4 and 1.0 is basically the whole lesson of this section.</p>
+  </div>
+
+  <h2 id="results">Results</h2>
+  <div class="panel">
+    <table>
+      <tr><th>k</th><th class="num">Baseline</th><th class="num">Model</th><th class="num">Lift</th></tr>
+      <tr><td>20</td><td class="num"><span class="signal down"></span>0.00</td><td class="num"><span class="signal up"></span>0.35</td><td class="num">real signal found</td></tr>
+      <tr><td>50</td><td class="num"><span class="signal down"></span>0.06</td><td class="num"><span class="signal up"></span>0.42</td><td class="num">≈ 7×</td></tr>
+    </table>
+  </div>
+  <p>The baseline didn't catch a single one of the top 20 truly declining pages. Out of the top 50, it only got 3 right (6%). The model actually found something real that the simple rule was completely missing.</p>
+
+  <h3>What the model actually looks at</h3>
+  <div class="stat-row"><div class="stat-label">avg_position</div><div class="stat-track"><div class="stat-fill" style="width:58.4%"></div></div><div class="stat-val">58.4%</div></div>
+  <div class="stat-row"><div class="stat-label">imp_first_half</div><div class="stat-track"><div class="stat-fill" style="width:34.7%"></div></div><div class="stat-val">34.7%</div></div>
+  <div class="stat-row"><div class="stat-label">avg_clicks</div><div class="stat-track"><div class="stat-fill" style="width:6.8%"></div></div><div class="stat-val">6.8%</div></div>
+  <p>Position matters most by a wide margin — more than the other two features combined. Clicks barely move the needle, which surprised me a little going in.</p>
+
+  <h3>Where it gets it wrong</h3>
+  <p>Out of 16,193 test pages, 2,113 were false positives — the model said "declining" and it wasn't. Looking at those pages, most sit around position 12 with modest traffic (around 150 impressions). My read on this: the model sometimes reacts to a page being in that awkward middle position without enough other evidence to back it up.</p>
+
+  <h3>Checking myself on the split</h3>
+  <p>I wanted to know if the client-grouped split I used actually mattered, so I re-ran the same model with a plain random split instead. Precision@20 came out identical (0.35), and Precision@50 was actually a bit lower with the random split (0.32 vs 0.40) — which is the opposite of what I expected. I went in assuming a random split would look artificially better. It didn't, at least not here. I'm still going to keep using the grouped split going forward, because the risk it protects against is real even if it didn't show up strongly in this particular run.</p>
+
+  <h2 id="limitations">What This Can't Tell You</h2>
+  <ul>
+    <li>This is one month of data from one slice of clients. I have no idea yet if it holds up in a different season or over a full year — that's untested.</li>
+    <li>The label is describing what already happened in March, not predicting the future. A real predictive version would need to use only past data to guess at a future window, which I haven't built yet.</li>
+    <li>A Precision@50 of 0.42 means more than half the pages in that top-50 list still won't actually be declining. This is a tool to help someone prioritize, not a tool that's "right."</li>
+    <li>I haven't accounted for seasonality, one page's traffic getting absorbed by another related page, or anything happening outside the data itself.</li>
+    <li>None of this is a claim about how Google actually ranks pages, and I'm not claiming that refreshing a page will fix it — that would need an actual experiment, not just a ranking model.</li>
+  </ul>
+
+  <h2 id="recommendations">What I'd Actually Recommend</h2>
+  <p>Running the model on the full test set (16,193 pages) sorts everything into four buckets:</p>
+  <div class="panel">
+    <table>
+      <tr><th>Reason code</th><th class="num">Count</th><th class="num">Share</th><th>Action</th></tr>
+      <tr><td><span class="signal down"></span>high_risk_declining</td><td class="num">1,477</td><td class="num">9.1%</td><td>Prioritize for refresh review</td></tr>
+      <tr><td>moderate_risk_visible</td><td class="num">947</td><td class="num">5.8%</td><td>Monitor closely</td></tr>
+      <tr><td>low_position_opportunity</td><td class="num">2,941</td><td class="num">18.2%</td><td>Targeted relevance improvement</td></tr>
+      <tr><td><span class="signal up"></span>low_risk</td><td class="num">10,828</td><td class="num">66.9%</td><td>No action needed</td></tr>
+    </table>
+  </div>
+  <div class="callout positive">
+    <h3>What stood out to me</h3>
+    <p>The pages at the very top of the "high risk" list aren't weak pages — they're pages the model is 97-99% confident about, and most of them are already ranking well (positions 3 through 13). These are pages that earned real visibility and are at risk of losing it, not junk pages nobody would miss.</p>
+  </div>
+  <p><strong>A human still has to look at every flagged page before anything happens.</strong> I wouldn't let this run on its own. It shouldn't auto-delete anything, shouldn't auto-merge pages, and definitely shouldn't auto-publish AI-written replacements just because a page got flagged. All this does is point at pages worth a second look — it doesn't decide what to do with them.</p>
+  <p><strong>Keeping it honest over time</strong> — I'd want to check Precision@50 again each month against what actually happened, and if it drops much below 0.30, that's my signal to retrain. If FlyRank changes their data columns, or a client turns on GA4 tracking they didn't have before, I'd re-run my earlier checks before trusting the output again.</p>
+
+  <h2 id="reproducibility">Reproducibility</h2>
+  <p>All notebooks, code, and committed metrics or figures behind this paper are public:</p>
+  <ul>
+    <li><a href="https://github.com/Samme-creator/flyrank-ml-internship-starter">github.com/Samme-creator/flyrank-ml-internship-starter</a></li>
+    <li><code>work/notebooks/w03_data_contract.ipynb</code> — data contract and verification queries</li>
+    <li><code>work/notebooks/w04_baseline_score.ipynb</code> — baseline rule and signal checks</li>
+    <li><code>work/notebooks/w05_model.ipynb</code> — model training and baseline comparison</li>
+    <li><code>work/notebooks/w06_validation_audit.ipynb</code> — grouped-split audit and leakage re-check</li>
+    <li><code>work/notebooks/w07_action_playbook.ipynb</code> — ranked action queue and exports</li>
+  </ul>
+  <p>Random seed fixed at 42 throughout. A fresh clone with a valid Hugging Face read token can re-run every result above.</p>
+
+  <h2 id="acknowledgments">Acknowledgments & Data Credit</h2>
+  <div class="credit">
+    <p style="margin:0;">Built on the FlyRank ML Internship dataset — <a href="https://flyrank.ai">flyrank.ai</a></p>
+  </div>
+
+  <footer>
+    Lane 2 — Refresh / Content Opportunity Scoring — FlyRank ML Internship<br>
+    Syed Samiullah — <a href="https://github.com/Samme-creator">github.com/Samme-creator</a>
+  </footer>
+
+</div>
+</body>
+</html>
